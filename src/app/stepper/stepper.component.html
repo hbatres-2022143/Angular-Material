@@ -1,0 +1,89 @@
+<mat-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="birthDateFormGroup">
+    <form [formGroup]="birthDateFormGroup">
+      <ng-template matStepLabel>Step 1: Enter Date of Birth</ng-template>
+      <mat-form-field>
+        <mat-label>Birthdate</mat-label>
+        <input
+          matInput
+          formControlName="birthDate"
+          [matDatepicker]="picker"
+          required
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error
+          *ngIf="birthDateFormGroup.get('birthDate')?.hasError('required')"
+        >
+          The date is required
+        </mat-error>
+        <mat-error
+          *ngIf="birthDateFormGroup.get('birthDate')?.hasError('invalidDate')"
+        >
+          The date must be before the current date
+        </mat-error>
+      </mat-form-field>
+      <div>
+        <button
+          mat-button
+          matStepperNext
+          [disabled]="birthDateFormGroup.invalid"
+        >
+          Next
+        </button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="nameFormGroup">
+    <form [formGroup]="nameFormGroup">
+      <ng-template matStepLabel>Step 2: Enter Name</ng-template>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" required />
+        <mat-error *ngIf="nameFormGroup.get('name')?.hasError('required')">
+          The name is required
+        </mat-error>
+        <mat-error *ngIf="nameFormGroup.get('name')?.hasError('pattern')">
+          Only letters are allowed
+        </mat-error>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext [disabled]="nameFormGroup.invalid">
+          Next
+        </button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="dpiFormGroup">
+    <form [formGroup]="dpiFormGroup">
+      <ng-template matStepLabel>Step 3: DPI</ng-template>
+      <mat-slide-toggle formControlName="dpiToggle">DPI</mat-slide-toggle>
+      <div *ngIf="dpiFormGroup.get('dpiToggle')?.value">
+        <mat-form-field>
+          <mat-label>DPI</mat-label>
+          <input matInput formControlName="dpi" />
+          <mat-error *ngIf="dpiFormGroup.get('dpi')?.hasError('required')">
+            DPI is required.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              dpiFormGroup.get('dpi')?.hasError('minlength') ||
+              dpiFormGroup.get('dpi')?.hasError('maxlength')
+            "
+          >
+            The DPI must be exactly 13 digits.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext [disabled]="dpiFormGroup.invalid">
+          Finish
+        </button>
+      </div>
+    </form>
+  </mat-step>
+</mat-stepper>
